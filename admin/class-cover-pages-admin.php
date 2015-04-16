@@ -70,6 +70,7 @@ class Cover_Pages_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->get_fields();
+		require_once plugin_dir_path( __FILE__ ) . '/inc/customizer-classes.php';
 		require_once plugin_dir_path( __FILE__ ) . '/inc/settings-callbacks.php';
 
 	}
@@ -118,7 +119,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'bg-opacity',
 			'section'	=> 'Background',
 			'label'		=> 'Background color Opacity',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  'logo' => array(
 			'id'		=> 'logo',
@@ -142,7 +143,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'title-size',
 			'section'	=> 'Logo, site title and tagline',
 			'label'		=> 'Site title Font size',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  'title-color' => array(
 			'id'		=> 'title-color',
@@ -166,7 +167,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'tag-size',
 			'section'	=> 'Logo, site title and tagline',
 			'label'		=> 'Tagline Font size',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  'tag-color' => array(
 			'id'		=> 'tag-color',
@@ -190,7 +191,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'text-size',
 			'section'	=> 'Text',
 			'label'		=> 'Text Font Size',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  'text-color' => array(
 			'id'		=> 'text-color',
@@ -214,7 +215,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'button1-bradius',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Corner Style',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  'button1-color' => array(
 			'id'		=> 'button1-color',
@@ -226,7 +227,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'button1-size',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Button Size',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  'button1-link' => array(
 			'id'		=> 'button1-link',
@@ -250,7 +251,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'button2-bradius',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Corner Style',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  'button2-color' => array(
 			'id'		=> 'button2-color',
@@ -262,7 +263,7 @@ class Cover_Pages_Admin {
 			'id'		=> 'button2-size',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Button Size',
-			'type'		=> 'number',
+			'type'		=> 'slider',
 		  ),
 		  ' button2-link' => array(
 			'id'		=> 'button2-link',
@@ -372,12 +373,6 @@ class Cover_Pages_Admin {
 	}
 
 	/**
-	 * Removes all actions from 'customize_register' if GET 'coverpages-customize'
-	 */
-	public function customizer_customize(){
-	}
-
-	/**
 	 * Adds customizer sections, fields and settings
 	 * 
 	 * @param object $wp_customize 
@@ -449,6 +444,21 @@ class Cover_Pages_Admin {
 
 						$wp_customize->add_control( 
 							new WP_Customize_Color_Control( 
+							$wp_customize, 
+							  $this->get_field_id($f['id']),
+							  array(
+								'section'  => $this->get_sec_id($sec),
+								'label'    => $f['label'],
+								'settings'     => $this->get_field_id($f['id']),
+							  )
+							) 
+						);
+
+						break;
+					case 'slider':
+
+						$wp_customize->add_control( 
+							new Cover_Page_Slider_Customize_Control( 
 							$wp_customize, 
 							  $this->get_field_id($f['id']),
 							  array(
@@ -581,6 +591,7 @@ class Cover_Pages_Admin {
 		
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cover-pages-admin.css', array(), $this->version, 'all' );
 		wp_add_inline_style( $this->plugin_name, $css );
+		wp_enqueue_style( $this->plugin_name . '-jqUI-css', '//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css' );
 
 	}
 
@@ -590,8 +601,18 @@ class Cover_Pages_Admin {
 	 * @since    1.0.0
 	 */
 	public function customize_styles() {
+	
+	//Getting IDs of all coverpage fields using slider
 	?>
 <style id="coverpages">
+	input.cover-pages-slider{
+		display:block;
+		position:fixed;
+		top:-9999px;
+	}
+	div.cover-pages-slider{
+		margin:16px 0;
+	}
 	<?php
 		if( !isset($_GET['coverpages-customize']) ){
 	?>
@@ -620,6 +641,9 @@ class Cover_Pages_Admin {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cover-pages-admin.js', array( 'jquery' ), $this->version, false );
+		if(is_customize_preview()){
+			wp_enqueue_script( 'jquery-ui-slider' );
+		}
 
 	}
 

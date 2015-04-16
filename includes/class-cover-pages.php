@@ -157,8 +157,9 @@ class Cover_Pages {
 		$this->loader->add_action( 'customize_controls_print_styles', $plugin_admin, 'customize_styles' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'settings' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'pages' );
+		add_action( 'customize_register', 'cover_pages_customizer_classes', 0 );
 		//We need to call our action at 0 so that it can remove all other actions
-		$this->loader->add_action( 'customize_register', $plugin_admin, 'customizer', 0 );
+		$this->loader->add_action( 'customize_register', $plugin_admin, 'customizer', 1 );
 		$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'admin_body_class' );
 		
 
