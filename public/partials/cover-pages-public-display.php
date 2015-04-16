@@ -58,7 +58,12 @@ do_action('cover_pages_head');
 		<!-- Template Start -->
 	<?php
 		//Data for Template
+		$tpls = array('1', '2');
 		$tpl = get_option("cover-pages-template", "1");
+		
+		if(!in_array($tpl, $tpls)){
+			$tpl = '1';
+		}
 		$logo_url = get_option("cover-pages-logo", "Sample");
 		$title = get_option("cover-pages-title", "Sample");
 		$tagline = get_option("cover-pages-tag-line", "Sample");
