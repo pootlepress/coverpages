@@ -210,7 +210,7 @@ class Cover_Pages_Public {
 	 */
 	public function home($template) {
 
-		if( get_option('cover-pages-activate') && is_front_page() ){
+		if( ( get_option('cover-pages-activate') || isset( $_GET['coverpages-customize'] ) ) && is_front_page() ){
 			$template = plugin_dir_path( __FILE__ ) . '/partials/cover-pages-public-display.php';
 		}
 		
