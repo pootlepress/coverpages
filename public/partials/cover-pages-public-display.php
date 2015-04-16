@@ -17,12 +17,25 @@
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 <style>
-	html, body, #wrap{
-		height:100%;
-		width:100%;
+	html, body, #wrap, #image-wrap{
+		min-height:100vh;
+		min-width:100%;
 		padding:0;
 		margin:0;
 		background-size: cover;
+	}
+	<?php if( is_user_logged_in() && !is_customize_preview() ){ ?>
+	#image-wrap{
+		margin-top: 32px;
+	}
+	<?php } ?>
+	#wrap, #image-wrap{
+		text-align: center;
+	}
+	#wrap:after{
+		content:'';
+		display:block;
+		clear:both;
 	}
 	.button{
 		display:inline-block;
@@ -39,11 +52,13 @@ do_action('cover_pages_head');
 </head>
 
 <body class="cover-page">
+  <div id="image-wrap">
 	<div id="wrap">
 
 		<!-- Template Start -->
 	<?php
 		//Data for Template
+		$tpl = get_option("cover-pages-template", "1");
 		$logo_url = get_option("cover-pages-logo", "Sample");
 		$title = get_option("cover-pages-title", "Sample");
 		$tagline = get_option("cover-pages-tag-line", "Sample");
@@ -56,11 +71,12 @@ do_action('cover_pages_head');
 		$button2_text = get_option("cover-pages-button2-text", "Sample");
 
 		//Calling the template here
-		require plugin_dir_path( __FILE__ ) . '/tpl/1.php';
+		require plugin_dir_path( __FILE__ ) . "/tpl/{$tpl}.php";
 	?>
 		<!-- Template Done -->
 
 	</div>
+  </div>
 <?php
 /**
  * Doing cover pages footer action to enqueue scripts and other stuff

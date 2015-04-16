@@ -47,6 +47,15 @@ class Cover_Pages_Admin {
 	 * @access   private
 	 * @var      array    $fields    Fields to render
 	 */
+	private $settings_fields;
+
+	/**
+	 * Customizer fields
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      array    $fields    Fields to render
+	 */
 	private $fields;
 
 	/**
@@ -61,6 +70,7 @@ class Cover_Pages_Admin {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 		$this->get_fields();
+		require_once plugin_dir_path( __FILE__ ) . '/inc/settings-callbacks.php';
 
 	}
 	
@@ -73,6 +83,24 @@ class Cover_Pages_Admin {
 	 */
 	public function get_fields() {
 
+		$this->settings_fields = array(
+  		  'activate' => array(
+			'id'		=> 'activate',
+			'section'	=> 'General',
+			'label'		=> 'Activate on Site',
+			'type'		=> 'checkbox',
+			'desc'		=> 'Check this box to enable CoverPage',
+		  ),
+		  'template' => array(
+			'id'		=> 'template',
+			'section'	=> 'Template',
+			'label'		=> 'Change Template',
+			'type'		=> 'radio',
+			'desc'		=> 'This will soon be click-n-select thumbnail',
+			'choices'	=> array('1'=>'Template 1', '2'=>'Template 2'),
+		  ),
+
+		);
 		$this->fields = array(
 		  'bg-image' => array(
 			'id'		=> 'bg-image',
@@ -242,20 +270,13 @@ class Cover_Pages_Admin {
 			'label'		=> 'Button Link',
 			'type'		=> 'text',
 		  ),
-		  'change-template' => array(
-			'id'		=> 'change-template',
+		  'template' => array(
+			'id'		=> 'template',
 			'section'	=> 'Change template',
 			'label'		=> 'Change Template',
 			'type'		=> 'radio',
+			'choices'	=> array('1'=>'Template 1', '2'=>'Template 2'),
 		  ),
-/* @TODO Create this option in Settings Page
-		  'activate' => array(
-			'id'		=> 'activate',
-			'section'	=> 'Activate',
-			'label'		=> 'Activate on Site',
-			'type'		=> 'checkbox',
-		  ),
-*/
 		);
 
 	}
@@ -281,6 +302,63 @@ class Cover_Pages_Admin {
 	}
 	
 	/**
+	 * Creates sections and fields for settings page
+	 *
+	 * @since	1.0.0
+	 * @param	string    $plugin_name       The name of this plugin.
+	 * @param	string    $version    The version of this plugin.
+	 */
+	public function settings() {
+		
+		$fields = $this->settings_fields;
+
+		//Creating sections array
+		foreach ($fields as $id => $args){
+			//Creating array containing sections as keys and array of fields arrays as value
+			$sections[$args['section']][] = $args;
+		}
+		
+		$page = $this->plugin_name.'-page';
+		$GLOBALS['cover-page-settings'] = $sections;
+		
+		foreach ( $sections as $sec => $fields ){
+
+			$sec_id = $this->get_sec_id($sec);
+			
+			add_settings_section(
+				$sec_id,
+				$sec,
+				'cover_pages_section_cb',
+				$sec_id
+			);
+			
+			foreach ($fields as $f){
+
+				$id = $this->get_field_id($f['id']);
+				
+				//Init options
+				if( false == get_option( $id ) ) add_option( $id );
+
+				register_setting(
+					$sec_id,
+					$id
+				);
+
+				add_settings_field( 
+					$id,
+					$f['label'],
+					'cover_pages_settings_cb',
+					$sec_id,
+					$sec_id,
+					$f
+				);
+
+			}
+		}
+
+	}
+	
+	/**
 	 * Outputs the coverpages main settings page
 	 *
 	 * @since	1.0.0
@@ -289,7 +367,7 @@ class Cover_Pages_Admin {
 	 */
 	public function pages() {
 
-		add_theme_page( 'Cover Page', 'Cover Page', 'edit_theme_options', $this->plugin_name, array( $this, 'CoverPageCallback' ) );
+		add_theme_page( 'Cover Page', 'Cover Page', 'edit_theme_options', $this->plugin_name.'-page', array( $this, 'CoverPageCallback' ) );
 
 	}
 

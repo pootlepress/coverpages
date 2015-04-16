@@ -95,7 +95,7 @@ class Cover_Pages_Public {
 		//Init CSS fpr output
 		$css = "";
 
-		$css .="body{\n";
+		$css .="#image-wrap{\n";
 
 		if($bg_img){
 			$css .= " background-image: url({$bg_img});\n";
