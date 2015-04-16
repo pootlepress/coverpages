@@ -62,9 +62,10 @@ if( !array_key_exists( $tab, $cover_page_sex ) ){
 	<?php if( $tab == 'cover-pages-section-template' ){ ?>
 	<a style="margin:1em;" class="button button-primary right" href="<?php
 		echo "customize.php?"
-		. "url=http://wp/7/?coverpages-customize=yo&"
+		. "url=" . site_url() . "/?coverpages-customize=yo&"
 		. "coverpages-customize=yo&"
-		. "return=%2F7%2Fwp-admin%2Fthemes.php%3Fpage%3Dcover-pages-page" ?>"> 
+		. "return="
+		. site_url() . "/wp-admin/themes.php?page=cover-pages-page" ?>"> 
 		Customize
 	</a>
 	<?php } ?>
