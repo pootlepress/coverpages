@@ -13,12 +13,12 @@
  * @package           Cover_Pages
  *
  * @wordpress-plugin
- * Plugin Name:       WordPress Plugin Boilerplate
- * Plugin URI:        http://example.com/cover-pages-uri/
- * Description:       This is a short description of what the plugin does. It's displayed in the WordPress admin area.
+ * Plugin Name:       Cover Pages
+ * Plugin URI:        http://pootlepress.com/cover-pages/
+ * Description:       Cover pages is a plugin that can be used with any Wordpress theme. Users will install the plugin and be able to configure a page that sits above their current homepage. This page will be customisable using a replication of the native Wordpress Customizer.
  * Version:           1.0.0
- * Author:            Your Name or Your Company
- * Author URI:        http://example.com/
+ * Author:            PootlePress
+ * Author URI:        http://pootlepress.com/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       cover-pages

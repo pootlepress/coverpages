@@ -14,3 +14,11 @@
 ?>
 
 <!-- This file should primarily consist of HTML with a little bit of PHP. -->
+<div class="wrap">
+	<h2>Welcome to CoverPages !!</h2>
+	<a href="<?php
+	echo "customize.php?"
+	. "url=http://wp/7/?coverpages-customize=yo&"
+	. "coverpages-customize=yo&"
+	. "return=%2F7%2Fwp-admin%2Fthemes.php%3Fpage%3Dcover-pages" ?>"> CoverPages Customizer </a>
+</div>

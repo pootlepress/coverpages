@@ -44,9 +44,9 @@ class Cover_Pages {
 	 *
 	 * @since    1.0.0
 	 * @access   protected
-	 * @var      string    $cover_pages    The string used to uniquely identify this plugin.
+	 * @var      string    $plugin_name    The string used to uniquely identify this plugin.
 	 */
-	protected $cover_pages;
+	protected $plugin_name;
 
 	/**
 	 * The current version of the plugin.
@@ -68,7 +68,7 @@ class Cover_Pages {
 	 */
 	public function __construct() {
 
-		$this->cover_pages = 'cover-pages';
+		$this->plugin_name = 'cover-pages';
 		$this->version = '1.0.0';
 
 		$this->load_dependencies();
@@ -135,7 +135,7 @@ class Cover_Pages {
 	private function set_locale() {
 
 		$plugin_i18n = new Cover_Pages_i18n();
-		$plugin_i18n->set_domain( $this->get_cover_pages() );
+		$plugin_i18n->set_domain( $this->get_plugin_name() );
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
@@ -150,10 +150,16 @@ class Cover_Pages {
 	 */
 	private function define_admin_hooks() {
 
-		$plugin_admin = new Cover_Pages_Admin( $this->get_cover_pages(), $this->get_version() );
+		$plugin_admin = new Cover_Pages_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		$this->loader->add_action( 'customize_controls_print_styles', $plugin_admin, 'customize_styles' );
+		$this->loader->add_action( 'admin_menu', $plugin_admin, 'pages' );
+		//We need to call our action at 0 so that it can remove all other actions
+		$this->loader->add_action( 'customize_register', $plugin_admin, 'customizer', 0 );
+		$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'admin_body_class' );
+		
 
 	}
 
@@ -166,11 +172,12 @@ class Cover_Pages {
 	 */
 	private function define_public_hooks() {
 
-		$plugin_public = new Cover_Pages_Public( $this->get_cover_pages(), $this->get_version() );
+		$plugin_public = new Cover_Pages_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
-
+		$this->loader->add_filter( 'template_include', $plugin_public, 'home' );
+		$this->loader->add_action( 'cover_pages_head', $plugin_public, 'options_css' );
 	}
 
 	/**
@@ -189,8 +196,8 @@ class Cover_Pages {
 	 * @since     1.0.0
 	 * @return    string    The name of the plugin.
 	 */
-	public function get_cover_pages() {
-		return $this->cover_pages;
+	public function get_plugin_name() {
+		return $this->plugin_name;
 	}
 
 	/**
