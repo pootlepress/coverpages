@@ -83,20 +83,22 @@ class Cover_Pages_Public {
 		$txt_font = get_option("cover-pages-text-font");
 		$txt_size = get_option("cover-pages-text-size");
 		$txt_color = get_option("cover-pages-text-color");
-		$b1_display = get_option("cover-pages-button1-display");
-		$b1_brad = get_option("cover-pages-button1-bradius");
-		$b1_color = get_option("cover-pages-button1-color");
-		$b1_size = get_option("cover-pages-button1-size");
-		$b2_display = get_option("cover-pages-button2-display");
-		$b2_brad = get_option("cover-pages-button2-bradius");
-		$b2_color = get_option("cover-pages-button2-color");
-		$b2_size = get_option("cover-pages-button2-size");
+		$b1 = get_option("cover-pages-button1");
+		$b1_display = $b1["display"];
+		$b1_brad = $b1["bradius"];
+		$b1_color = $b1["color"];
+		$b1_size = $b1["size"];
+		$b2 = get_option("cover-pages-button2");
+		$b2_display = $b2["display"];;
+		$b2_brad = $b2["bradius"];
+		$b2_color = $b2["color"];
+		$b2_size = $b2["size"];
 
 		//Init CSS fpr output
 		$css = "";
 
 		$css .="#image-wrap{\n";
-
+		
 		if($bg_img){
 			$css .= " background-image: url({$bg_img});\n";
 		}
@@ -155,7 +157,7 @@ class Cover_Pages_Public {
 		$css .="\n}\n";
 		$css .="#button1{\n";
 
-		if(!$b1_display){
+		if(! '1' == $b1_display ){
 			$css .= " display:none; ";
 		}
 		if($b1_brad){
@@ -172,8 +174,8 @@ class Cover_Pages_Public {
 		$css .="\n}\n";
 		$css .="#button2{\n";
 
-		if($b2_display){
-			$css .= "  ";
+		if(! '1' == $b2_display ){
+			$css .= " display:none; ";
 		}
 		if($b2_brad){
 			$css .= " -webkit-border-radius:{$b2_brad}px;\n";

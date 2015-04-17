@@ -200,73 +200,75 @@ class Cover_Pages_Admin {
 			'type'		=> 'color',
 		  ),
 		  'button1-display' => array(
-			'id'		=> 'button1-display',
+			'id'		=> 'button1[display]',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Display button',
 			'type'		=> 'checkbox',
+			'default'	=> 1,
 		  ),
 		  'button1-text' => array(
-			'id'		=> 'button1-text',
+			'id'		=> 'button1[text]',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Button Text',
 			'type'		=> 'text',
 		  ),
 		  'button1-bradius' => array(
-			'id'		=> 'button1-bradius',
+			'id'		=> 'button1[bradius]',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Corner Style',
 			'type'		=> 'slider',
 		  ),
 		  'button1-color' => array(
-			'id'		=> 'button1-color',
+			'id'		=> 'button1[color]',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Button Color',
 			'type'		=> 'color',
 		  ),
 		  'button1-size' => array(
-			'id'		=> 'button1-size',
+			'id'		=> 'button1[size]',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Button Size',
 			'type'		=> 'slider',
 		  ),
 		  'button1-link' => array(
-			'id'		=> 'button1-link',
+			'id'		=> 'button1[link]',
 			'section'	=> 'Buttons 1',
 			'label'		=> 'Button Link',
 			'type'		=> 'text',
 		  ),
 		  'button2-display' => array(
-			'id'		=> 'button2-display',
+			'id'		=> 'button2[display]',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Display button',
 			'type'		=> 'checkbox',
+			'default'	=> 1,
 		  ),
 		  'button2-text' => array(
-			'id'		=> 'button2-text',
+			'id'		=> 'button2[text]',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Button Text',
 			'type'		=> 'text',
 		  ),
 		  'button2-bradius' => array(
-			'id'		=> 'button2-bradius',
+			'id'		=> 'button2[bradius]',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Corner Style',
 			'type'		=> 'slider',
 		  ),
 		  'button2-color' => array(
-			'id'		=> 'button2-color',
+			'id'		=> 'button2[color]',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Button Color',
 			'type'		=> 'color',
 		  ),
 		  ' button2-size' => array(
-			'id'		=> 'button2-size',
+			'id'		=> 'button2[size]',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Button Size',
 			'type'		=> 'slider',
 		  ),
 		  ' button2-link' => array(
-			'id'		=> 'button2-link',
+			'id'		=> 'button2[link]',
 			'section'	=> 'Buttons 2',
 			'label'		=> 'Button Link',
 			'type'		=> 'text',
@@ -425,12 +427,28 @@ class Cover_Pages_Admin {
 
 
 			foreach ($fields as $f){
+				
+				$id = $this->get_field_id($f['id']);
+
+				//Arguments to pass
+				$args =	array(
+					'section'  => $this->get_sec_id($sec),
+					'label'    => $f['label'],
+					'settings'     => $id,
+					
+				);
+				
+				$default = '';
+				if( isset( $f['default'] ) ){
+					$default = $f['default'];
+				}
+
 				//Add Setting
 				$wp_customize->add_setting(
-					$this->get_field_id($f['id']).'',
+					$id,
 					array(
 						'type'   => 'option',
-						'default'   => '',
+						'default'   => $default,
 						'transport' => 'refresh'
 					)
 				);
@@ -445,12 +463,8 @@ class Cover_Pages_Admin {
 						$wp_customize->add_control( 
 							new WP_Customize_Color_Control( 
 							$wp_customize, 
-							  $this->get_field_id($f['id']),
-							  array(
-								'section'  => $this->get_sec_id($sec),
-								'label'    => $f['label'],
-								'settings'     => $this->get_field_id($f['id']),
-							  )
+							  $id,
+							  $args
 							) 
 						);
 
@@ -460,12 +474,8 @@ class Cover_Pages_Admin {
 						$wp_customize->add_control( 
 							new Cover_Page_Slider_Customize_Control( 
 							$wp_customize, 
-							  $this->get_field_id($f['id']),
-							  array(
-								'section'  => $this->get_sec_id($sec),
-								'label'    => $f['label'],
-								'settings'     => $this->get_field_id($f['id']),
-							  )
+							  $id,
+							  $args
 							) 
 						);
 
@@ -475,26 +485,24 @@ class Cover_Pages_Admin {
 						$wp_customize->add_control( 
 							new WP_Customize_Image_Control( 
 							$wp_customize, 
-							  $this->get_field_id($f['id']),
+							  $id,
 							  array(
 								'section'  => $this->get_sec_id($sec),
 								'label'    => $f['label'],
-								'settings'     => $this->get_field_id($f['id']),
+								'settings'     => $id,
 							  )
 							) 
 						);
 
 						break;
 					case 'font':
+						
+						$args['choices'] = $this->get_fonts();
+						$args['type'] = 'select';
 
 						$wp_customize->add_control(
-							$this->get_field_id($f['id']),
-							array(
-								'section'  => $this->get_sec_id($sec),
-								'label'    => $f['label'],
-								'type'     => 'select',
-								'choices'  => $this->get_fonts()
-							)
+							$id,
+							$args
 						);
 
 						break;
@@ -505,25 +513,19 @@ class Cover_Pages_Admin {
 						if(!isset($f['choices']))$f['choices']=array('choice1'=>'Choice 1', 'choice2'=>'Choice 2');
 
 						$wp_customize->add_control(
-							$this->get_field_id($f['id']),
-							array(
-								'section'  => $this->get_sec_id($sec),
-								'label'    => $f['label'],
-								'type'     => $f['type'],
-								'choices'  => $f['choices'],
-							)
+							$id,
+							$args
 						);
 
 						break;
 					default:
-
+						$args['type'] = $f['type'];
+						if( 'checkbox' == $f['type'] ){
+							add_option($id, 1);
+						}
 						$wp_customize->add_control(
-							$this->get_field_id($f['id']),
-							array(
-								'section'  => $this->get_sec_id($sec),
-								'label'    => $f['label'],
-								'type'     => $f['type'],
-							)
+							$id,
+							$args
 						);
 
 					}
