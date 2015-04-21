@@ -456,83 +456,99 @@ class Cover_Pages_Admin {
 				//For Translation
 				$f['label'] = __($f['label'], 'cover-pages');
 
-				//Add control by type
-				switch ($f['type']){
-					case 'color':
-
-						$wp_customize->add_control( 
-							new WP_Customize_Color_Control( 
-							$wp_customize, 
-							  $id,
-							  $args
-							) 
-						);
-
-						break;
-					case 'slider':
-
-						$wp_customize->add_control( 
-							new Cover_Page_Slider_Customize_Control( 
-							$wp_customize, 
-							  $id,
-							  $args
-							) 
-						);
-
-						break;
-					case 'image':
-
-						$wp_customize->add_control( 
-							new WP_Customize_Image_Control( 
-							$wp_customize, 
-							  $id,
-							  array(
-								'section'  => $this->get_sec_id($sec),
-								'label'    => $f['label'],
-								'settings'     => $id,
-							  )
-							) 
-						);
-
-						break;
-					case 'font':
-						
-						$args['choices'] = $this->get_fonts();
-						$args['type'] = 'select';
-
-						$wp_customize->add_control(
-							$id,
-							$args
-						);
-
-						break;
-					case 'radio':
-					case 'select':
-
-
-						if(!isset($f['choices']))$f['choices']=array('choice1'=>'Choice 1', 'choice2'=>'Choice 2');
-
-						$wp_customize->add_control(
-							$id,
-							$args
-						);
-
-						break;
-					default:
-						$args['type'] = $f['type'];
-						if( 'checkbox' == $f['type'] ){
-							add_option($id, 1);
-						}
-						$wp_customize->add_control(
-							$id,
-							$args
-						);
-
-					}
+				$this->render_customizer_field( $wp_customize, $f, $id, $args );
 			}
 
 		}
 
+	}
+
+	/**
+	 * Renders the fields for the cusmtomizer
+	 *
+	 * @since    1.0.0
+	 *
+	 * @param object $wp_customize WP_Customizer
+	 * @param $f
+	 * @param $id
+	 * @param $args
+	 *
+	 * @internal param array $sections Sections and thier fields
+	 */
+	public function render_customizer_field( $wp_customize, $f, $id, $args ){
+		//Add control by type
+		switch ( $f['type'] ){
+			case 'color':
+
+				$wp_customize->add_control(
+					new WP_Customize_Color_Control(
+						$wp_customize,
+						$id,
+						$args
+					)
+				);
+
+				break;
+			case 'slider':
+
+				$wp_customize->add_control(
+					new Cover_Page_Slider_Customize_Control(
+						$wp_customize,
+						$id,
+						$args
+					)
+				);
+
+				break;
+			case 'image':
+
+				$wp_customize->add_control(
+					new WP_Customize_Image_Control(
+						$wp_customize,
+						$id,
+						array(
+							'section'  => $this->get_sec_id($f['section']),
+							'label'    => $f['label'],
+							'settings'     => $id,
+						)
+					)
+				);
+
+				break;
+			case 'font':
+
+				$args['choices'] = $this->get_fonts();
+				$args['type'] = 'select';
+
+				$wp_customize->add_control(
+					$id,
+					$args
+				);
+
+				break;
+			case 'radio':
+			case 'select':
+
+				if( ! isset( $f['choices'] ) ) $f['choices'] = array( 'choice1' => 'Choice 1',  'choice2' => 'Choice 2' );
+				$args['choices'] = $f['choices'];
+				$args['type'] = $f['type'];
+
+				$wp_customize->add_control(
+					$id,
+					$args
+				);
+
+				break;
+			default:
+				$args['type'] = $f['type'];
+				if( 'checkbox' == $f['type'] ){
+					add_option($id, 1);
+				}
+				$wp_customize->add_control(
+					$id,
+					$args
+				);
+		}
 	}
 
 	/**
