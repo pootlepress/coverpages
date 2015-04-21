@@ -13,7 +13,7 @@
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title><?php wp_title('&raquo;','true','right'); ?><?php bloginfo('name'); ?></title>
+<title><?php wp_title( '&raquo;', 'true', 'right' ); ?><?php bloginfo( 'name' ); ?></title>
 <link rel="profile" href="http://gmpg.org/xfn/11">
 <link rel="pingback" href="<?php bloginfo( 'pingback_url' ); ?>">
 <style>
@@ -24,7 +24,7 @@
 		margin:0;
 		background-size: cover;
 	}
-	<?php if( is_user_logged_in() && !is_customize_preview() ){ ?>
+	<?php if ( is_user_logged_in() && ! is_customize_preview() ) { ?>
 	#image-wrap{
 		margin-top: 32px;
 	}
@@ -47,7 +47,7 @@
 /**
  * Doing cover pages head action to enqueue styles and scripts
  */
-do_action('cover_pages_head');
+do_action( 'cover_pages_head' );
 ?>
 </head>
 
@@ -57,26 +57,26 @@ do_action('cover_pages_head');
 
 		<!-- Template Start -->
 	<?php
-		//Data for Template
-		$tpls = array('1', '2');
-		$tpl = get_option("cover-pages-template", "1");
-		
-		if(!in_array($tpl, $tpls)){
-			$tpl = '1';
-		}
-		$logo_url = get_option("cover-pages-logo", "Sample");
-		$title = get_option("cover-pages-title", "Sample");
-		$tagline = get_option("cover-pages-tag-line", "Sample");
-		$text = get_option("cover-pages-text", "Sample");
-		$button1 = get_option("cover-pages-button1");
-		$button1_link = $button1["link"];
-		$button1_text = $button1["text"];
-		$button2 = get_option("cover-pages-button2");
-		$button2_link = $button2["link"];
-		$button2_text = $button2["text"];
+	//Data for Template
+	$tpls = array( '1', '2' );
+	$tpl = get_option( 'cover-pages-template', '1' );
 
-		//Calling the template here
-		require plugin_dir_path( __FILE__ ) . "/tpl/{$tpl}.php";
+	if ( ! in_array( $tpl, $tpls ) ) {
+		$tpl = '1';
+	}
+	$logo_url = get_option( 'cover-pages-logo', 'Sample' );
+	$title = get_option( 'cover-pages-title', 'Sample' );
+	$tagline = get_option( 'cover-pages-tag-line', 'Sample' );
+	$text = get_option( 'cover-pages-text', 'Sample' );
+	$button1 = get_option( 'cover-pages-button1' );
+	$button1_link = $button1['link'];
+	$button1_text = $button1['text'];
+	$button2 = get_option( 'cover-pages-button2' );
+	$button2_link = $button2['link'];
+	$button2_text = $button2['text'];
+
+	//Calling the template here
+	require plugin_dir_path( __FILE__ ) . "/tpl/{$tpl}.php";
 	?>
 		<!-- Template Done -->
 
@@ -86,7 +86,7 @@ do_action('cover_pages_head');
 /**
  * Doing cover pages footer action to enqueue scripts and other stuff
  */
-do_action('cover_pages_footer');
+do_action( 'cover_pages_footer' );
 ?>
 </body>
 </html>
