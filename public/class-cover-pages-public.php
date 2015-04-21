@@ -75,24 +75,24 @@ class Cover_Pages_Public {
 
 		return array(
 			'bg' => array(
-				'img' => get_option( 'cover-pages-bg-image' ),
-				'color' => get_option( 'cover-pages-bg-color' ),
-				'opacity' => get_option( 'cover-pages-bg-opacity' ),
+				'img' => get_option( 'cover-pages-bg-image', '' ),
+				'color' => get_option( 'cover-pages-bg-color', '' ),
+				'opacity' => get_option( 'cover-pages-bg-opacity', '' ),
 			),
 			'title' => array(
-				'font' => get_option( 'cover-pages-title-font' ),
-				'size' => get_option( 'cover-pages-title-size' ),
-				'color' => get_option( 'cover-pages-title-color' ),
+				'font' => get_option( 'cover-pages-title-font', '' ),
+				'size' => get_option( 'cover-pages-title-size', '' ),
+				'color' => get_option( 'cover-pages-title-color', '' ),
 			),
 			'tagline' => array(
-				'font' => get_option( 'cover-pages-tag-font' ),
-				'size' => get_option( 'cover-pages-tag-size' ),
-				'color' => get_option( 'cover-pages-tag-color' ),
+				'font' => get_option( 'cover-pages-tag-font', '' ),
+				'size' => get_option( 'cover-pages-tag-size', '' ),
+				'color' => get_option( 'cover-pages-tag-color', '' ),
 			),
 			'text' => array(
-				'font' => get_option( 'cover-pages-text-font' ),
-				'size' => get_option( 'cover-pages-text-size' ),
-				'color' => get_option( 'cover-pages-text-color' ),
+				'font' => get_option( 'cover-pages-text-font', '' ),
+				'size' => get_option( 'cover-pages-text-size', '' ),
+				'color' => get_option( 'cover-pages-text-color', '' ),
 			),
 			'button1' => array(
 				'display' => ! empty( $b1['display'] ),
@@ -119,9 +119,9 @@ class Cover_Pages_Public {
 		$settings = $this->get_options();
 
 		$css = $this->bg_css( $settings['bg'] );
-		$css .= $this->title_css( $settings['title'] );
-		$css .= $this->tagline_css( $settings['tagline'] );
-		$css .= $this->text_css( $settings['text'] );
+		$css .= $this->typo_css( $settings['title'], 'title' );
+		$css .= $this->typo_css( $settings['tagline'], 'tagline' );
+		$css .= $this->typo_css( $settings['text'], 'text' );
 		$css .= $this->button_css( $settings['button1'], 'button1' );
 		$css .= $this->button_css( $settings['button2'], 'button2' );
 
@@ -160,72 +160,17 @@ class Cover_Pages_Public {
 	}
 
 	/**
-	 * Outputs CSS from Options
+	 * Outputs typography CSS from Options
 	 * @since    1.0.0
 	 *
 	 * @param array $settings Section settings
+	 * @param string $element Id of element to apply styles to
 	 *
 	 * @return string
 	 */
-	public function title_css( $settings ) {
+	public function typo_css( $settings, $element = 'title' ) {
 
-		$css = "#title{\n";
-
-		if ( $settings['font'] ) {
-			$css .= " font-family:{$settings['font']};\n";
-		}
-		if ( $settings['size'] ) {
-			$css .= " font-size:{$settings['size']}px;\n";
-		}
-		if ( $settings['color'] ) {
-			$css .= " color:{$settings['color']};\n";
-		}
-
-		$css .= "\n}\n";
-
-		return $css;
-
-	}
-
-	/**
-	 * Outputs CSS from Options
-	 * @since    1.0.0
-	 *
-	 * @param array $settings Section settings
-	 *
-	 * @return string
-	 */
-	public function tagline_css( $settings ) {
-
-		$css = "#tagline{\n";
-
-		if ( $settings['font'] ) {
-			$css .= " font-family:{$settings['font']};\n";
-		}
-		if ( $settings['size'] ) {
-			$css .= " font-size:{$settings['size']}px;\n";
-		}
-		if ( $settings['color'] ) {
-			$css .= " color:{$settings['color']};\n";
-		}
-
-		$css .= "\n}\n";
-
-		return $css;
-
-	}
-
-	/**
-	 * Outputs CSS from Options
-	 * @since    1.0.0
-	 *
-	 * @param array $settings Section settings
-	 *
-	 * @return string
-	 */
-	public function text_css( $settings ) {
-
-		$css = "#text{\n";
+		$css = "#{$element}{\n";
 
 		if ( $settings['font'] ) {
 			$css .= " font-family:{$settings['font']};\n";
