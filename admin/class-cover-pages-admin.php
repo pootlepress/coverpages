@@ -59,6 +59,15 @@ class Cover_Pages_Admin {
 	private $settings_fields;
 
 	/**
+	 * Settings fields
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 * @var      array    $fields    Fields to render
+	 */
+	private $fields;
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since	1.0.0
@@ -115,26 +124,25 @@ class Cover_Pages_Admin {
 	 * Creates sections and fields for settings page
 	 *
 	 * @since	1.0.0
-	 * @param	string    $plugin_name       The name of this plugin.
-	 * @param	string    $version    The version of this plugin.
 	 */
 	public function settings() {
 		
 		$fields = $this->settings_fields;
 
+		$sections = array();
+
 		//Creating sections array
-		foreach ($fields as $id => $args){
+		foreach ( $fields as $id => $args ) {
 			//Creating array containing sections as keys and array of fields arrays as value
-			$sections[$args['section']][] = $args;
+			$sections[ $args['section'] ][] = $args;
 		}
 		
-		$page = $this->plugin_name.'-page';
 		$GLOBALS['cover-page-settings'] = $sections;
 		
 		foreach ( $sections as $sec => $fields ){
 
-			$sec_id = $this->get_sec_id($sec);
-			
+			$sec_id = $this->get_sec_id( $sec );
+
 			add_settings_section(
 				$sec_id,
 				$sec,
@@ -142,12 +150,12 @@ class Cover_Pages_Admin {
 				$sec_id
 			);
 			
-			foreach ($fields as $f){
+			foreach ( $fields as $f ) {
 
-				$id = $this->get_field_id($f['id']);
+				$id = $this->get_field_id( $f['id'] );
 				
 				//Init options
-				if( false == get_option( $id ) ) add_option( $id );
+				if ( false == get_option( $id ) ) { add_option( $id ); }
 
 				register_setting(
 					$sec_id,
@@ -172,12 +180,10 @@ class Cover_Pages_Admin {
 	 * Outputs the coverpages main settings page
 	 *
 	 * @since	1.0.0
-	 * @param	string    $plugin_name       The name of this plugin.
-	 * @param	string    $version    The version of this plugin.
 	 */
 	public function pages() {
 
-		add_theme_page( 'Cover Page', 'Cover Page', 'edit_theme_options', $this->plugin_name.'-page', array( $this, 'CoverPageCallback' ) );
+		add_theme_page( 'Cover Page', 'Cover Page', 'edit_theme_options', $this->plugin_name.'-page', array( $this, 'cover_page_callback' ) );
 
 	}
 
@@ -188,28 +194,28 @@ class Cover_Pages_Admin {
 	 */
 	public function customizer($wp_customize){
 		
-		$coverpages = isset( $_REQUEST['coverpages-customize'] );
-		if( $coverpages ){
-			remove_all_actions('customize_register');
+		$coverpages = filter_input( INPUT_GET, 'coverpages-customize' );
+		if ( $coverpages ) {
+			remove_all_actions( 'customize_register' );
 		}
 
-			//Registering control types
-			$wp_customize->register_control_type( 'WP_Customize_Color_Control' );
-			$wp_customize->register_control_type( 'WP_Customize_Upload_Control' );
-			$wp_customize->register_control_type( 'WP_Customize_Image_Control' );
+		//Registering control types
+		$wp_customize->register_control_type( 'WP_Customize_Color_Control' );
+		$wp_customize->register_control_type( 'WP_Customize_Upload_Control' );
+		$wp_customize->register_control_type( 'WP_Customize_Image_Control' );
 
-			//Fields to output
-			$fields = $this->fields;
-			$sections = array();
+		//Fields to output
+		$fields = $this->fields;
+		$sections = array();
 
-			//Creating sections array
-			foreach ( $fields as $id => $args ){
-				//Creating array containing sections as keys and array of fields arrays as value
-				$sections[$args['section']][] = $args;
-			}
+		//Creating sections array
+		foreach ( $fields as $id => $args ){
+			//Creating array containing sections as keys and array of fields arrays as value
+			$sections[ $args['section'] ][] = $args;
+		}
 
-				//Creating customizer Sections, Controls and Settings
-				$this->custo_fields->customizer_fields( $wp_customize, $sections );
+		//Creating customizer Sections, Controls and Settings
+		$this->admin_fields->customizer_fields( $wp_customize, $sections );
 
 	}
 
@@ -217,12 +223,10 @@ class Cover_Pages_Admin {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since	1.0.0
-	 * @param	string    $plugin_name       The name of this plugin.
-	 * @param	string    $version    The version of this plugin.
 	 */
-	public function CoverPageCallback() {
+	public function cover_page_callback() {
 
-		require plugin_dir_path(__FILE__).'/partials/cover-pages-admin-display.php';
+		require plugin_dir_path( __FILE__ ).'/partials/cover-pages-admin-display.php';
 
 	}
 
@@ -233,7 +237,7 @@ class Cover_Pages_Admin {
 	 */
 	public function admin_body_class( $classes ) {
 
-		if( isset($_GET['coverpages-customize']) ){
+		if( filter_input( INPUT_GET, 'coverpages-customize' ) ){
 			$classes .= ' coverpages-customize ';
 		}
 
@@ -251,7 +255,7 @@ class Cover_Pages_Admin {
 		//Init CSS
 		$css = '';
 		//Hiding customizer info if coverpages-customizer requested
-		if( isset($_GET['coverpages-customize']) ){
+		if( filter_input( INPUT_GET, 'coverpages-customize' ) ){
 			$css .= '#customize-info{display:none;}';
 		}
 		
@@ -268,8 +272,8 @@ class Cover_Pages_Admin {
 	 */
 	public function customize_styles() {
 	
-	//Getting IDs of all coverpage fields using slider
-	?>
+		//Getting IDs of all coverpage fields using slider
+		?>
 <style id="coverpages">
 	input.cover-pages-slider{
 		display:block;
@@ -281,22 +285,21 @@ class Cover_Pages_Admin {
 	}
 	<?php
 		if( !isset($_GET['coverpages-customize']) ){
-	?>
-	#accordion-section-cover-pages-section-background,
-	#accordion-section-cover-pages-section-logo--site-title-and-tagline,
-	#accordion-section-cover-pages-section-text,
-	#accordion-section-cover-pages-section-buttons-1,
-	#accordion-section-cover-pages-section-buttons-2,
-	#accordion-section-cover-pages-section-change-template,
-	#accordion-section-cover-pages-section-activate{
-		display: none !important;
-	}
+		?>
+		#accordion-section-cover-pages-section-background,
+		#accordion-section-cover-pages-section-logo--site-title-and-tagline,
+		#accordion-section-cover-pages-section-text,
+		#accordion-section-cover-pages-section-buttons-1,
+		#accordion-section-cover-pages-section-buttons-2,
+		#accordion-section-cover-pages-section-change-template,
+		#accordion-section-cover-pages-section-activate{
+			display: none !important;
+		}
 		<?php
 		}
-		
-		?>
+	?>
 </style>
-		<?php
+	<?php
 	}
 
 	/**
@@ -307,7 +310,7 @@ class Cover_Pages_Admin {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/cover-pages-admin.js', array( 'jquery' ), $this->version, false );
-		if(is_customize_preview()){
+		if ( is_customize_preview() ) {
 			wp_enqueue_script( 'jquery-ui-slider' );
 		}
 

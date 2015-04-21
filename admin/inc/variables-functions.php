@@ -54,12 +54,7 @@ function cover_pages_settings_cb( $args ){
 		$desc = false;
 	}
 
-	switch ( $args['type'] ) {
-		case 'checkbox':
-			?>
-			<input type="checkbox" id="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" name="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" value="1" <?php checked( cover_page_option( $id ) ) ?> />
-			<?php
-			break;
+	switch ( $type ) {
 		case 'radio':
 			foreach ( $args['choices'] as $k => $v ) {
 				?>
@@ -69,7 +64,7 @@ function cover_pages_settings_cb( $args ){
 			break;
 		default:
 			?>
-			<input type="<?php echo esc_attr( $type ) ?>" id="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" name="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" value="<?php echo cover_page_option( $id ) ?>" />
+			<input type="<?php echo esc_attr( $type ) ?>" id="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" name="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" value="<?php echo 'checkbox' == esc_attr( $type ) ? '1" ' . checked( cover_page_option( $id ) ) : cover_page_option( $id ) . '"' ?> />
 			<?php
 	}
 
