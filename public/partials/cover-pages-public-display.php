@@ -69,11 +69,11 @@ do_action( 'cover_pages_head' );
 	$tagline = get_option( 'cover-pages-tag-line', 'Sample' );
 	$text = get_option( 'cover-pages-text', 'Sample' );
 	$button1 = get_option( 'cover-pages-button1' );
-	$button1_link = $button1['link'];
-	$button1_text = $button1['text'];
+	$button1_link = ! empty ( $button1['link'] ) ? $button1['link'] : '';
+	$button1_text = ! empty ( $button1['text'] ) ? $button1['text'] : '';
 	$button2 = get_option( 'cover-pages-button2' );
-	$button2_link = $button2['link'];
-	$button2_text = $button2['text'];
+	$button2_link = ! empty ( $button2['link'] ) ? $button2['link'] : '';
+	$button2_text = ! empty ( $button2['text'] ) ? $button2['text'] : '';
 
 	//Calling the template here
 	require plugin_dir_path( __FILE__ ) . "/tpl/{$tpl}.php";

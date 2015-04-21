@@ -179,8 +179,7 @@ class Cover_Pages {
 		$this->loader->add_filter( 'template_include', $plugin_public, 'home' );
 		$this->loader->add_action( 'cover_pages_head', $plugin_public, 'options_css' );
 		add_action( 'cover_pages_footer', 'wp_admin_bar_render', 1000 );
-		add_action( 'cover_pages_footer', 'wp_print_footer_scripts',         20    );
-
+		add_action( 'cover_pages_footer', 'wp_print_footer_scripts', 20 );
 
 	}
 

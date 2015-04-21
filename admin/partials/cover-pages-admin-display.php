@@ -19,21 +19,21 @@
 // Getting Cover Page Settings
 $cover_page_settings = $GLOBALS['cover-page-settings'];
 
-foreach ($cover_page_settings as $k => $v) {
+foreach ( $cover_page_settings as $k => $v ) {
 
-	$cover_page_sex['cover-pages-section-' . str_replace(array(' ', '_', ',', '.'), '-',strtolower($k))] = $k;
+	$cover_page_sex[ 'cover-pages-section-' . str_replace( array( ' ', '_', ',', '.' ), '-', strtolower( $k ) ) ] = $k;
 
 }
 
 $tab = '';
 
-if( isset( $_GET['tab'] ) ){
+if ( isset( $_GET['tab'] ) ) {
 
-	$tab = $_GET['tab'];
+	$tab = filter_input( INPUT_GET, 'tab' );
 
 }
 
-if( !array_key_exists( $tab, $cover_page_sex ) ){
+if ( ! array_key_exists( $tab, $cover_page_sex ) ) {
 
 	$tab = 'cover-pages-section-general';
 
@@ -50,7 +50,7 @@ if( !array_key_exists( $tab, $cover_page_sex ) ){
 	<?php
 	foreach( $cover_page_sex as $sec => $name){
 	?>
-		<a href="?page=cover-pages-page&tab=<?php echo $sec; ?>" class="nav-tab <?php  echo $sec == $tab ? 'nav-tab-active' : ''; ?>"><?php echo $name; ?></a>
+		<a href="?page=cover-pages-page&tab=<?php echo esc_attr( $sec ); ?>" class="nav-tab <?php  echo $sec == $tab ? 'nav-tab-active' : ''; ?>"><?php echo esc_attr( $name ); ?></a>
 	<?php
 	}
 	
@@ -59,13 +59,13 @@ if( !array_key_exists( $tab, $cover_page_sex ) ){
 
 	<?php settings_errors(); ?>
 	
-	<?php if( $tab == 'cover-pages-section-template' ){ ?>
+	<?php if ( 'cover-pages-section-template' == $tab ) { ?>
 	<a style="margin:1em;" class="button button-primary right" href="<?php
-		echo "customize.php?"
-		. "url=" . site_url() . "/?coverpages-customize=yo&"
-		. "coverpages-customize=yo&"
-		. "return="
-		. site_url() . "/wp-admin/themes.php?page=cover-pages-page" ?>"> 
+		echo 'customize.php?'
+		. 'url=' . esc_attr( site_url() ) . '/?coverpages-customize=yo&'
+		. 'coverpages-customize=yo&'
+		. 'return='
+		. esc_attr( site_url() ) . "/wp-admin/themes.php?page=cover-pages-page" ?>">
 		Customize
 	</a>
 	<?php } ?>
@@ -81,3 +81,6 @@ if( !array_key_exists( $tab, $cover_page_sex ) ){
 	</form>
 
 </div>
+<?php
+//@TODO remove if ( isset( $_GET['tab'] ) ) {
+?>

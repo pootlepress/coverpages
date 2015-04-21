@@ -11,10 +11,10 @@
 /**
  * 
  * @param string $id The coverpage id of setting
- * @return type
+ * @return mixed CoverPage Option
  */
 function cover_page_option($id){
-	return get_option('cover-pages-'.$id);
+	return get_option( 'cover-pages-'.$id );
 }
 
 /**
@@ -22,8 +22,8 @@ function cover_page_option($id){
  * @param string $id The coverpage id of setting
  * @return string the wp settings id
  */
-function cover_page_settings_id($id){
-	return 'cover-pages-'.$id;
+function cover_page_settings_id( $id ){
+	return esc_attr( 'cover-pages-'.$id );
 }
 
 /**
@@ -48,33 +48,33 @@ function cover_pages_settings_cb( $args ){
 	$type = $args['type'];
 	
 	//Description
-	if( isset($args['desc']) ) {
+	if ( isset( $args['desc'] ) ) {
 		$desc = $args['desc'];
 	} else {
 		$desc = false;
 	}
 
-	switch ($args['type']){
+	switch ( $args['type'] ) {
 		case 'checkbox':
 			?>
 			<input type="checkbox" id="<?php echo cover_page_settings_id( $id ) ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="1" <?php checked( cover_page_option( $id ) ) ?> />
 			<?php
 			break;
 		case 'radio':
-			foreach( $args['choices'] as $k => $v ){
+			foreach ( $args['choices'] as $k => $v ) {
 				?>
-			<label for="<?php echo cover_page_settings_id( $id ) .  $k ?>"><input type="radio" id="<?php echo cover_page_settings_id( $id ) . $k ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="<?php echo $k; ?>" <?php checked( $k, cover_page_option( $id ) ) ?> /> <?php echo $v; ?> </label> <br/>
+			<label for="<?php echo cover_page_settings_id( $id ) .  esc_attr( $k ) ?>"><input type="radio" id="<?php echo cover_page_settings_id( $id ) . esc_attr( $k ) ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="<?php echo esc_attr( $k ); ?>" <?php checked( $k, cover_page_option( $id ) ) ?> /> <?php echo esc_attr( $v ); ?> </label> <br/>
 				<?php
 			}
 			break;
 		default:
 			?>
-			<input type="<?php echo $type ?>" id="<?php echo cover_page_settings_id( $id ) ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="<?php echo cover_page_option( $id ) ?>" />
+			<input type="<?php echo esc_attr( $type ) ?>" id="<?php echo cover_page_settings_id( $id ) ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="<?php echo cover_page_option( $id ) ?>" />
 			<?php
 	}
 
-	if( $desc ){
-		echo '<p class="description"> '  . $desc . '</p>';
+	if ( $desc ) {
+		echo '<p class="description"> ' . esc_html( $desc ) . '</p>';
 	}
 }
 

@@ -125,7 +125,7 @@ class Cover_Pages_Public {
 		$css .= $this->button_css( $settings['button1'], 'button1' );
 		$css .= $this->button_css( $settings['button2'], 'button2' );
 
-		echo "<style id='cover-page-option-styles'>{$css}</style>";
+		echo "<style id='cover-page-option-styles'>" . esc_html( $css ) . "</style>";
 
 	}
 
@@ -148,8 +148,8 @@ class Cover_Pages_Public {
 		$css .= "#wrap{\n";
 
 		if ( $settings['opacity'] ) {
-			$a = $settings['opacity']/100;
-			list($r, $g, $b) = sscanf( $settings['color'], "#%02x%02x%02x" );
+			$a = $settings['opacity'] / 100;
+			list($r, $g, $b) = sscanf( $settings['color'], '#%02x%02x%02x' );
 			$css .= " background-color: rgba( {$r}, {$g}, {$b}, {$a} );\n";
 		}
 
@@ -202,7 +202,7 @@ class Cover_Pages_Public {
 		$css = "#{$button}{\n";
 
 		if ( ! $settings['display'] ) {
-			$css .= " display:none; ";
+			$css .= ' display:none; ';
 		}
 		if ( $settings['brad'] ) {
 			$css .= " -webkit-border-radius:{$settings['brad']}px;\n";
@@ -239,7 +239,7 @@ class Cover_Pages_Public {
 	 */
 	public function home($template) {
 
-		if ( ( get_option( 'cover-pages-activate') || isset( $_GET['coverpages-customize'] ) ) && is_front_page() ) {
+		if ( ( get_option( 'cover-pages-activate' ) || isset( $_GET['coverpages-customize'] ) ) && is_front_page() ) {
 			$template = plugin_dir_path( __FILE__ ) . '/partials/cover-pages-public-display.php';
 		}
 		
