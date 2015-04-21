@@ -125,7 +125,7 @@ class Cover_Pages_Public {
 		$css .= $this->button_css( $settings['button1'], 'button1' );
 		$css .= $this->button_css( $settings['button2'], 'button2' );
 
-		echo "<style id='cover-page-option-styles'>" . esc_html( $css ) . "</style>";
+		echo "<style id='cover-page-option-styles'>" . esc_html( $css ) . '</style>';
 
 	}
 

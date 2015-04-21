@@ -107,31 +107,30 @@ class Cover_Pages_Customizer_Fields {
 	 */
 	public function customizer_fields( $wp_customize, $sections ){
 
-		foreach ($sections as $sec => $fields){
+		foreach ( $sections as $sec => $fields ) {
 
 			$wp_customize->add_section(
-				$this->get_sec_id($sec),
+				$this->get_sec_id( $sec ),
 				array(
 					'title'     => $sec,
-					'priority'  => 999
+					'priority'  => 999,
 				)
 			);
 
+			foreach ( $fields as $f ){
 
-			foreach ($fields as $f){
-
-				$id = $this->get_field_id($f['id']);
+				$id = $this->get_field_id( $f['id'] );
 
 				//Arguments to pass
-				$args =	array(
-					'section'  => $this->get_sec_id($sec),
+				$args = array(
+					'section'  => $this->get_sec_id( $sec ),
 					'label'    => $f['label'],
-					'settings'     => $id,
+					'settings' => $id,
 
 				);
 
 				$default = '';
-				if( isset( $f['default'] ) ){
+				if ( isset( $f['default'] ) ) {
 					$default = $f['default'];
 				}
 
@@ -141,18 +140,16 @@ class Cover_Pages_Customizer_Fields {
 					array(
 						'type'   => 'option',
 						'default'   => $default,
-						'transport' => 'refresh'
+						'transport' => 'refresh',
 					)
 				);
 
 				//For Translation
-				$f['label'] = __($f['label'], 'cover-pages');
+				$f['label'] = esc_html__( $f['label'], 'cover-pages' );
 
 				$this->render_customizer_field( $wp_customize, $f, $id, $args );
 			}
-
 		}
-
 	}
 
 	/**
@@ -199,7 +196,7 @@ class Cover_Pages_Customizer_Fields {
 						$wp_customize,
 						$id,
 						array(
-							'section'  => $this->get_sec_id($f['section']),
+							'section'  => $this->get_sec_id( $f['section'] ),
 							'label'    => $f['label'],
 							'settings'     => $id,
 						)
@@ -221,7 +218,10 @@ class Cover_Pages_Customizer_Fields {
 			case 'radio':
 			case 'select':
 
-				if( ! isset( $f['choices'] ) ) $f['choices'] = array( 'choice1' => 'Choice 1',  'choice2' => 'Choice 2' );
+				if ( ! isset( $f['choices'] ) ) {
+					$f['choices'] = array( 'choice1' => 'Choice 1',  'choice2' => 'Choice 2', );
+				}
+
 				$args['choices'] = $f['choices'];
 				$args['type'] = $f['type'];
 
@@ -233,8 +233,8 @@ class Cover_Pages_Customizer_Fields {
 				break;
 			default:
 				$args['type'] = $f['type'];
-				if( 'checkbox' == $f['type'] ){
-					add_option($id, 1);
+				if ( 'checkbox' == $f['type'] ) {
+					add_option( $id, 1 );
 				}
 				$wp_customize->add_control(
 					$id,
@@ -253,7 +253,7 @@ class Cover_Pages_Customizer_Fields {
 		return array(
 			'times'     => 'Times New Roman',
 			'arial'     => 'Arial',
-			'courier'   => 'Courier New'
+			'courier'   => 'Courier New',
 		);
 	}
 

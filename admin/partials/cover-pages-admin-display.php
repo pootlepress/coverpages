@@ -25,13 +25,7 @@ foreach ( $cover_page_settings as $k => $v ) {
 
 }
 
-$tab = '';
-
-if ( isset( $_GET['tab'] ) ) {
-
-	$tab = filter_input( INPUT_GET, 'tab' );
-
-}
+$tab = filter_input( INPUT_GET, 'tab' );
 
 if ( ! array_key_exists( $tab, $cover_page_sex ) ) {
 
@@ -81,6 +75,3 @@ if ( ! array_key_exists( $tab, $cover_page_sex ) ) {
 	</form>
 
 </div>
-<?php
-//@TODO remove if ( isset( $_GET['tab'] ) ) {
-?>
