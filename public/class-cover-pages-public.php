@@ -64,133 +64,215 @@ class Cover_Pages_Public {
 		wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/cover-pages-public.css', array(), $this->version );
 
 	}
-	
+
+	/**
+	 * Gets the settings from options
+	 * @since    1.0.0
+	 */
+	public function get_options(){
+		$b1 = get_option( 'cover-pages-button1' );
+		$b2 = get_option( 'cover-pages-button2' );
+
+		return array(
+			'bg' => array(
+				'img' => get_option( 'cover-pages-bg-image' ),
+				'color' => get_option( 'cover-pages-bg-color' ),
+				'opacity' => get_option( 'cover-pages-bg-opacity' ),
+			),
+			'title' => array(
+				'font' => get_option( 'cover-pages-title-font' ),
+				'size' => get_option( 'cover-pages-title-size' ),
+				'color' => get_option( 'cover-pages-title-color' ),
+			),
+			'tagline' => array(
+				'font' => get_option( 'cover-pages-tag-font' ),
+				'size' => get_option( 'cover-pages-tag-size' ),
+				'color' => get_option( 'cover-pages-tag-color' ),
+			),
+			'text' => array(
+				'font' => get_option( 'cover-pages-text-font' ),
+				'size' => get_option( 'cover-pages-text-size' ),
+				'color' => get_option( 'cover-pages-text-color' ),
+			),
+			'button1' => array(
+				'display' => ! empty( $b1['display'] ),
+				'brad' => $b1['bradius'],
+				'color' => $b1['color'],
+				'size' => $b1['size'],
+			),
+			'button2' => array(
+				'display' => ! empty( $b2['display'] ),
+				'brad' => $b2['bradius'],
+				'color' => $b2['color'],
+				'size' => $b2['size'],
+			),
+		);
+	}
+
 	/**
 	 * Outputs CSS from Options
+	 * @since    1.0.0
 	 */
-	public function options_css(){
-		
+	public function options_css() {
+
 		//Getting all the options
-		$bg_img = get_option("cover-pages-bg-image");
-		$bg_color = get_option("cover-pages-bg-color");
-		$bg_opacity = get_option("cover-pages-bg-opacity");
-		$ttl_font = get_option("cover-pages-title-font");
-		$ttl_size = get_option("cover-pages-title-size");
-		$ttl_color = get_option("cover-pages-title-color");
-		$tg_font = get_option("cover-pages-tag-font");
-		$tg_size = get_option("cover-pages-tag-size");
-		$tg_color = get_option("cover-pages-tag-color");
-		$txt_font = get_option("cover-pages-text-font");
-		$txt_size = get_option("cover-pages-text-size");
-		$txt_color = get_option("cover-pages-text-color");
-		$b1 = get_option("cover-pages-button1");
-		$b1_display = $b1["display"];
-		$b1_brad = $b1["bradius"];
-		$b1_color = $b1["color"];
-		$b1_size = $b1["size"];
-		$b2 = get_option("cover-pages-button2");
-		$b2_display = $b2["display"];;
-		$b2_brad = $b2["bradius"];
-		$b2_color = $b2["color"];
-		$b2_size = $b2["size"];
+		$settings = $this->get_options();
 
-		//Init CSS fpr output
-		$css = "";
+		$css = $this->bg_css( $settings['bg'] );
+		$css .= $this->title_css( $settings['title'] );
+		$css .= $this->tagline_css( $settings['tagline'] );
+		$css .= $this->text_css( $settings['text'] );
+		$css .= $this->button_css( $settings['button1'], 'button1' );
+		$css .= $this->button_css( $settings['button2'], 'button2' );
 
-		$css .="#image-wrap{\n";
-		
-		if($bg_img){
-			$css .= " background-image: url({$bg_img});\n";
+		echo "<style id='cover-page-option-styles'>{$css}</style>";
+
+	}
+
+	/**
+	 * Outputs CSS for background options
+	 * @since    1.0.0
+	 */
+	public function bg_css( $settings ) {
+
+		$css = "#image-wrap{\n";
+
+		if ( $settings['img'] ) {
+			$css .= " background-image: url({$settings['img']} );\n";
 		}
-		if($bg_color){
-			$css .= " background-color: {$bg_color};\n";
+		if ( $settings['color'] ) {
+			$css .= " background-color: {$settings['color']};\n";
 		}
 
-		$css .="\n}\n";
-		$css .="#wrap{\n";
+		$css .= "\n}\n";
+		$css .= "#wrap{\n";
 
-		if($bg_opacity){
-			$a = $bg_opacity/100;
-			list($r, $g, $b) = sscanf($bg_color, "#%02x%02x%02x");
+		if ( $settings['opacity'] ) {
+			$a = $settings['opacity']/100;
+			list($r, $g, $b) = sscanf( $settings['color'], "#%02x%02x%02x" );
 			$css .= " background-color: rgba( {$r}, {$g}, {$b}, {$a} );\n";
 		}
 
-		$css .="\n}\n";
-		$css .="#title{\n";
+		$css .= "\n}\n";
 
-		if($ttl_font){
-			$css .= " font-family:{$ttl_font};\n";
-		}
-		if($ttl_size){
-			$css .= " font-size:{$ttl_size}px;\n";
-		}
-		if($ttl_color){
-			$css .= " color:{$ttl_color};\n";
-		}
+		return $css;
 
-		$css .="\n}\n";
-		$css .="#tagline{\n";
+	}
 
-		if($tg_font){
-			$css .= " font-family:{$tg_font};\n";
-		}
-		if($tg_size){
-			$css .= " font-size:{$tg_size}px;\n";
-		}
-		if($tg_color){
-			$css .= " color:{$tg_color};\n";
-		}
+	/**
+	 * Outputs CSS from Options
+	 * @since    1.0.0
+	 *
+	 * @param array $settings Section settings
+	 *
+	 * @return string
+	 */
+	public function title_css( $settings ) {
 
-		$css .="\n}\n";
-		$css .="#text{\n";
+		$css = "#title{\n";
 
-		if($txt_font){
-			$css .= " font-family:{$txt_font};\n";
+		if ( $settings['font'] ) {
+			$css .= " font-family:{$settings['font']};\n";
 		}
-		if($txt_size){
-			$css .= " font-size:{$txt_size}px;\n";
+		if ( $settings['size'] ) {
+			$css .= " font-size:{$settings['size']}px;\n";
 		}
-		if($txt_color){
-			$css .= " color:{$txt_color};\n";
+		if ( $settings['color'] ) {
+			$css .= " color:{$settings['color']};\n";
 		}
 
-		$css .="\n}\n";
-		$css .="#button1{\n";
+		$css .= "\n}\n";
 
-		if(! '1' == $b1_display ){
+		return $css;
+
+	}
+
+	/**
+	 * Outputs CSS from Options
+	 * @since    1.0.0
+	 *
+	 * @param array $settings Section settings
+	 *
+	 * @return string
+	 */
+	public function tagline_css( $settings ) {
+
+		$css = "#tagline{\n";
+
+		if ( $settings['font'] ) {
+			$css .= " font-family:{$settings['font']};\n";
+		}
+		if ( $settings['size'] ) {
+			$css .= " font-size:{$settings['size']}px;\n";
+		}
+		if ( $settings['color'] ) {
+			$css .= " color:{$settings['color']};\n";
+		}
+
+		$css .= "\n}\n";
+
+		return $css;
+
+	}
+
+	/**
+	 * Outputs CSS from Options
+	 * @since    1.0.0
+	 *
+	 * @param array $settings Section settings
+	 *
+	 * @return string
+	 */
+	public function text_css( $settings ) {
+
+		$css = "#text{\n";
+
+		if ( $settings['font'] ) {
+			$css .= " font-family:{$settings['font']};\n";
+		}
+		if ( $settings['size'] ) {
+			$css .= " font-size:{$settings['size']}px;\n";
+		}
+		if ( $settings['color'] ) {
+			$css .= " color:{$settings['color']};\n";
+		}
+
+		$css .= "\n}\n";
+
+		return $css;
+
+	}
+
+	/**
+	 * Outputs CSS from Options
+	 * @since    1.0.0
+	 *
+	 * @param array $settings Section settings
+	 * @param string $button Name of button
+	 *
+	 * @return string
+	 */
+	public function button_css( $settings, $button = 'button1' ) {
+
+		$css = "#{$button}{\n";
+
+		if ( ! $settings['display'] ) {
 			$css .= " display:none; ";
 		}
-		if($b1_brad){
-			$css .= " -webkit-border-radius:{$b1_brad}px;\n";
-			$css .= " border-radius:{$b1_brad}px;\n";
+		if ( $settings['brad'] ) {
+			$css .= " -webkit-border-radius:{$settings['brad']}px;\n";
+			$css .= " border-radius:{$settings['brad']}px;\n";
 		}
-		if($b1_color){
-			$css .= " background-color:{$b1_color};\n";
+		if ( $settings['color'] ) {
+			$css .= " background-color:{$settings['color']};\n";
 		}
-		if($b1_size){
-			$css .= " width:{$b1_size}px;\n";
-		}
-
-		$css .="\n}\n";
-		$css .="#button2{\n";
-
-		if(! '1' == $b2_display ){
-			$css .= " display:none; ";
-		}
-		if($b2_brad){
-			$css .= " -webkit-border-radius:{$b2_brad}px;\n";
-			$css .= " border-radius:{$b2_brad}px;\n";
-		}
-		if($b2_color){
-			$css .= " background-color:{$b2_color};\n";
-		}
-		if($b2_size){
-			$css .= " width:{$b2_size}px;\n";
+		if ( $settings['size'] ) {
+			$css .= " width:{$settings['size']}px;\n";
 		}
 
-		$css .="\n}\n";
-		
-		echo "<style id='cover-page-option-styles'>{$css}</style>";
+		$css .= "\n}\n";
+
+		return $css;
 
 	}
 
@@ -212,7 +294,7 @@ class Cover_Pages_Public {
 	 */
 	public function home($template) {
 
-		if( ( get_option('cover-pages-activate') || isset( $_GET['coverpages-customize'] ) ) && is_front_page() ){
+		if ( ( get_option( 'cover-pages-activate') || isset( $_GET['coverpages-customize'] ) ) && is_front_page() ) {
 			$template = plugin_dir_path( __FILE__ ) . '/partials/cover-pages-public-display.php';
 		}
 		
