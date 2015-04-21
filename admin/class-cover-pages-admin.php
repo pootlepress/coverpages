@@ -215,7 +215,7 @@ class Cover_Pages_Admin {
 		}
 
 		//Creating customizer Sections, Controls and Settings
-		$this->admin_fields->customizer_fields( $wp_customize, $sections );
+		$this->custo_fields->customizer_fields( $wp_customize, $sections );
 
 	}
 
@@ -237,7 +237,7 @@ class Cover_Pages_Admin {
 	 */
 	public function admin_body_class( $classes ) {
 
-		if( filter_input( INPUT_GET, 'coverpages-customize' ) ){
+		if ( filter_input( INPUT_GET, 'coverpages-customize' ) ) {
 			$classes .= ' coverpages-customize ';
 		}
 
@@ -255,7 +255,7 @@ class Cover_Pages_Admin {
 		//Init CSS
 		$css = '';
 		//Hiding customizer info if coverpages-customizer requested
-		if( filter_input( INPUT_GET, 'coverpages-customize' ) ){
+		if ( filter_input( INPUT_GET, 'coverpages-customize' ) ) {
 			$css .= '#customize-info{display:none;}';
 		}
 		
@@ -284,7 +284,7 @@ class Cover_Pages_Admin {
 		margin:16px 0;
 	}
 	<?php
-		if( !isset($_GET['coverpages-customize']) ){
+		if ( filter_input( INPUT_GET, 'coverpages-customize' ) ) {
 		?>
 		#accordion-section-cover-pages-section-background,
 		#accordion-section-cover-pages-section-logo--site-title-and-tagline,
