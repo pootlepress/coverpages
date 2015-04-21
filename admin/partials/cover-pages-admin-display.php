@@ -42,9 +42,9 @@ if ( ! array_key_exists( $tab, $cover_page_sex ) ) {
 	<h2 class="nav-tab-wrapper">
 	
 	<?php
-	foreach( $cover_page_sex as $sec => $name){
+	foreach ( $cover_page_sex as $sec => $name ) {
 	?>
-		<a href="?page=cover-pages-page&tab=<?php echo esc_attr( $sec ); ?>" class="nav-tab <?php  echo $sec == $tab ? 'nav-tab-active' : ''; ?>"><?php echo esc_attr( $name ); ?></a>
+		<a href="?page=cover-pages-page&tab=<?php echo esc_attr( $sec ); ?>" class="nav-tab <?php  echo esc_attr( $sec ) == $tab ? 'nav-tab-active' : ''; ?>"><?php echo esc_attr( $name ); ?></a>
 	<?php
 	}
 	
@@ -59,7 +59,7 @@ if ( ! array_key_exists( $tab, $cover_page_sex ) ) {
 		. 'url=' . esc_attr( site_url() ) . '/?coverpages-customize=yo&'
 		. 'coverpages-customize=yo&'
 		. 'return='
-		. esc_attr( site_url() ) . "/wp-admin/themes.php?page=cover-pages-page" ?>">
+		. esc_attr( site_url() ) . '/wp-admin/themes.php?page=cover-pages-page' ?>">
 		Customize
 	</a>
 	<?php } ?>

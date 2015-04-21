@@ -219,7 +219,7 @@ class Cover_Pages_Customizer_Fields {
 			case 'select':
 
 				if ( ! isset( $f['choices'] ) ) {
-					$f['choices'] = array( 'choice1' => 'Choice 1',  'choice2' => 'Choice 2', );
+					$f['choices'] = array( 'choice1' => 'Choice 1', 'choice2' => 'Choice 2', );
 				}
 
 				$args['choices'] = $f['choices'];

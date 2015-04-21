@@ -20,21 +20,21 @@ function cover_pages_customizer_classes(){
 
 				$id = 'cover-pages-slider-' . str_replace( '[', '-', str_replace( ']', '', $this->id ) ); ?>
 					<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
-					<div class="cover-pages-slider" id="<?php echo $id ?>"></div>
+					<div class="cover-pages-slider" id="<?php echo esc_attr( $id ) ?>"></div>
 					<script>
 					jQuery(document).ready(function($){
-						var input = $('#input-<?php echo $id ?>');
-						$('#<?php echo $id ?>').slider({
+						var input = $('#input-<?php echo esc_attr( $id ) ?>');
+						$('#<?php echo esc_attr( $id ) ?>').slider({
 							value: input.val(),
 							change: function( e, ui ) {
-								var input = $('#input-<?php echo $id ?>')
+								var input = $('#input-<?php echo esc_attr( $id ) ?>')
 								input.val(ui.value);
 								input.change();
 							}
 						});
 					})
 					</script>
-					<input id="input-<?php echo $id ?>" type="number" data-default-color="<?php echo $this->default; ?>" value="<?php echo intval( $this->value() ); ?>" class="cover-pages-slider" <?php $this->link(); ?>  />
+					<input id="input-<?php echo esc_attr( $id ) ?>" type="number" data-default-color="<?php echo esc_attr( $this->default ); ?>" value="<?php echo intval( $this->value() ); ?>" class="cover-pages-slider" <?php $this->link(); ?>  />
 		<?php }
 	}
 

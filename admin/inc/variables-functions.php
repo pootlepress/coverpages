@@ -23,7 +23,7 @@ function cover_page_option($id){
  * @return string the wp settings id
  */
 function cover_page_settings_id( $id ){
-	return esc_attr( 'cover-pages-'.$id );
+	return 'cover-pages-'.$id;
 }
 
 /**
@@ -57,19 +57,19 @@ function cover_pages_settings_cb( $args ){
 	switch ( $args['type'] ) {
 		case 'checkbox':
 			?>
-			<input type="checkbox" id="<?php echo cover_page_settings_id( $id ) ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="1" <?php checked( cover_page_option( $id ) ) ?> />
+			<input type="checkbox" id="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" name="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" value="1" <?php checked( cover_page_option( $id ) ) ?> />
 			<?php
 			break;
 		case 'radio':
 			foreach ( $args['choices'] as $k => $v ) {
 				?>
-			<label for="<?php echo cover_page_settings_id( $id ) .  esc_attr( $k ) ?>"><input type="radio" id="<?php echo cover_page_settings_id( $id ) . esc_attr( $k ) ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="<?php echo esc_attr( $k ); ?>" <?php checked( $k, cover_page_option( $id ) ) ?> /> <?php echo esc_attr( $v ); ?> </label> <br/>
+			<label for="<?php echo esc_attr( cover_page_settings_id( $id ) ) .  esc_attr( $k ) ?>"><input type="radio" id="<?php echo esc_attr( cover_page_settings_id( $id ) ) . esc_attr( $k ) ?>" name="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" value="<?php echo esc_attr( $k ); ?>" <?php checked( $k, cover_page_option( $id ) ) ?> /> <?php echo esc_attr( $v ); ?> </label> <br/>
 				<?php
 			}
 			break;
 		default:
 			?>
-			<input type="<?php echo esc_attr( $type ) ?>" id="<?php echo cover_page_settings_id( $id ) ?>" name="<?php echo cover_page_settings_id( $id ) ?>" value="<?php echo cover_page_option( $id ) ?>" />
+			<input type="<?php echo esc_attr( $type ) ?>" id="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" name="<?php echo esc_attr( cover_page_settings_id( $id ) ) ?>" value="<?php echo cover_page_option( $id ) ?>" />
 			<?php
 	}
 
@@ -98,7 +98,7 @@ $coverpages_settings_api_fields = array(
 );
 
 //Settings fields
-$coverpages_customization_api_fields =  array(
+$coverpages_customization_api_fields = array(
 	'bg-image' => array(
 		'id'		=> 'bg-image',
 		'section'	=> 'Background',
