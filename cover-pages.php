@@ -57,6 +57,10 @@ register_deactivation_hook( __FILE__, 'deactivate_cover_pages' );
  */
 require plugin_dir_path( __FILE__ ) . 'includes/class-cover-pages.php';
 
+require_once plugin_dir_path( __FILE__ ) . '/admin/inc/customizer-classes.php';
+require_once plugin_dir_path( __FILE__ ) . '/admin/inc/class-customizer-fields.php';
+require_once plugin_dir_path( __FILE__ ) . '/admin/inc/variables-functions.php';
+
 /**
  * Begins execution of the plugin.
  *
