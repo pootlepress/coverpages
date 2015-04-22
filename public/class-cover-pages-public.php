@@ -83,7 +83,7 @@ class Cover_Pages_Public {
 			'tagline' => $this->get_typography_options( 'tag' ),
 			'text' => $this->get_typography_options( 'text' ),
 			'button1' => $this->get_button_options( 1 ),
-			'button2' =>  $this->get_button_options( 2 ),
+			'button2' => $this->get_button_options( 2 ),
 		);
 	}
 
