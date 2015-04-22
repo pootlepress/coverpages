@@ -167,80 +167,66 @@ class Cover_Pages_Customizer_Fields {
 	public function render_customizer_field( $wp_customize, $f, $id, $args ){
 		//Add control by type
 		switch ( $f['type'] ){
+
 			case 'color':
-
-				$wp_customize->add_control(
-					new WP_Customize_Color_Control(
-						$wp_customize,
-						$id,
-						$args
-					)
-				);
-
-				break;
 			case 'slider':
-
-				$wp_customize->add_control(
-					new Cover_Page_Slider_Customize_Control(
-						$wp_customize,
-						$id,
-						$args
-					)
-				);
-
-				break;
 			case 'image':
-
-				$wp_customize->add_control(
-					new WP_Customize_Image_Control(
-						$wp_customize,
-						$id,
-						array(
-							'section'  => $this->get_sec_id( $f['section'] ),
-							'label'    => $f['label'],
-							'settings'     => $id,
-						)
-					)
-				);
-
+				$this->cool_fields( $wp_customize, $f['type'], $id, $args );
+				return;
 				break;
-			case 'font':
 
+			case 'font':
 				$args['choices'] = $this->get_fonts();
 				$args['type'] = 'select';
-
-				$wp_customize->add_control(
-					$id,
-					$args
-				);
-
 				break;
+
 			case 'radio':
 			case 'select':
-
-				if ( ! isset( $f['choices'] ) ) {
-					$f['choices'] = array( 'choice1' => 'Choice 1', 'choice2' => 'Choice 2', );
-				}
-
-				$args['choices'] = $f['choices'];
+				$args['choices'] = empty( $f['choices'] ) ? array( ) :  $f['choices'] ;
 				$args['type'] = $f['type'];
-
-				$wp_customize->add_control(
-					$id,
-					$args
-				);
-
 				break;
+
 			default:
 				$args['type'] = $f['type'];
-				if ( 'checkbox' == $f['type'] ) {
-					add_option( $id, 1 );
-				}
-				$wp_customize->add_control(
-					$id,
-					$args
-				);
 		}
+
+		$wp_customize->add_control(
+			$id,
+			$args
+		);
+
+	}
+
+	/**
+	 * Array of fonts for font controls
+	 *
+	 * @since	1.0.0
+	 * @return array Fonts
+	 */
+	public function cool_fields( $wp_customize, $type, $id, $args ){
+		switch ( $type ) {
+
+			case 'color':
+				$field_class = 'WP_Customize_Color_Control';
+				break;
+
+			case 'slider':
+				$field_class = 'Cover_Page_Slider_Customize_Control';
+				break;
+
+			case 'image':
+				$field_class = 'WP_Customize_Image_Control';
+				break;
+		}
+
+		$wp_customize->add_control(
+			new $field_class(
+				$wp_customize,
+				$id,
+				$args
+			)
+		);
+
 	}
 
 	/**

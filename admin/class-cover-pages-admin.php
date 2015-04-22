@@ -284,7 +284,7 @@ class Cover_Pages_Admin {
 		margin:16px 0;
 	}
 	<?php
-		if ( filter_input( INPUT_GET, 'coverpages-customize' ) ) {
+		if ( ! filter_input( INPUT_GET, 'coverpages-customize' ) ) {
 		?>
 		#accordion-section-cover-pages-section-background,
 		#accordion-section-cover-pages-section-logo--site-title-and-tagline,
