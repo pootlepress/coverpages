@@ -67,17 +67,17 @@ class Cover_Pages_Public {
 
 	/**
 	 * Gets the settings from options
+	 *
+	 * @return array settings
+	 *
 	 * @since    1.0.0
 	 */
 	public function get_options(){
-		$b1 = get_option( 'cover-pages-button1' );
-		$b2 = get_option( 'cover-pages-button2' );
-
 		return array(
 			'bg' => array(
 				'img' => get_option( 'cover-pages-bg-image', '' ),
 				'color' => get_option( 'cover-pages-bg-color', '' ),
-				'opacity' => get_option( 'cover-pages-bg-opacity', '' ),
+				'opacity' => get_option( 'cover-pages-bg-opacity', '0' ),
 			),
 			'title' => array(
 				'font' => get_option( 'cover-pages-title-font', '' ),
@@ -94,18 +94,33 @@ class Cover_Pages_Public {
 				'size' => get_option( 'cover-pages-text-size', '' ),
 				'color' => get_option( 'cover-pages-text-color', '' ),
 			),
-			'button1' => array(
-				'display' => ! empty( $b1['display'] ),
-				'brad' => $b1['bradius'],
-				'color' => $b1['color'],
-				'size' => $b1['size'],
-			),
-			'button2' => array(
-				'display' => ! empty( $b2['display'] ),
-				'brad' => $b2['bradius'],
-				'color' => $b2['color'],
-				'size' => $b2['size'],
-			),
+			'button1' => $this->get_button_options( 1 ),
+			'button2' =>  $this->get_button_options( 2 ),
+		);
+	}
+
+	/**
+	 * Gets the settings for buttons
+	 * @since    1.0.0
+	 *
+	 * @param $n Number of button
+	 *
+	 * @return array settings
+	 */
+	public function get_button_options( $n ){
+		$b = get_option(
+			"cover-pages-button{$n}",
+			array(
+				'bradius' => '',
+				'color' => '',
+				'size' => '',
+			)
+		);
+		return array(
+			'display' => ! empty( $b['display'] ),
+			'brad' => $b['bradius'],
+			'color' => $b['color'],
+			'size' => $b['size'],
 		);
 	}
 
@@ -135,23 +150,17 @@ class Cover_Pages_Public {
 	 */
 	public function bg_css( $settings ) {
 
-		$css = "#image-wrap{\n";
+		$css = "#image-wrap{\n"
+			. " background-image: url({$settings['img']} );\n"
+			. " background-color: {$settings['color']};\n"
+			. "\n}\n";
 
-		if ( $settings['img'] ) {
-			$css .= " background-image: url({$settings['img']} );\n";
-		}
-		if ( $settings['color'] ) {
-			$css .= " background-color: {$settings['color']};\n";
-		}
+		//For rgba color
+		$a = $settings['opacity'] / 100;
+		list($r, $g, $b) = sscanf( $settings['color'], '#%02x%02x%02x' );
 
-		$css .= "\n}\n";
 		$css .= "#wrap{\n";
-
-		if ( $settings['opacity'] ) {
-			$a = $settings['opacity'] / 100;
-			list($r, $g, $b) = sscanf( $settings['color'], '#%02x%02x%02x' );
-			$css .= " background-color: rgba( {$r}, {$g}, {$b}, {$a} );\n";
-		}
+		$css .= " background-color: rgba( {$r}, {$g}, {$b}, {$a} );\n";
 
 		$css .= "\n}\n";
 
@@ -204,17 +213,10 @@ class Cover_Pages_Public {
 		if ( ! $settings['display'] ) {
 			$css .= ' display:none; ';
 		}
-		if ( $settings['brad'] ) {
-			$css .= " -webkit-border-radius:{$settings['brad']}px;\n";
-			$css .= " border-radius:{$settings['brad']}px;\n";
-		}
-		if ( $settings['color'] ) {
-			$css .= " background-color:{$settings['color']};\n";
-		}
-		if ( $settings['size'] ) {
-			$css .= " width:{$settings['size']}px;\n";
-		}
-
+		$css .= " -webkit-border-radius:{$settings['brad']}px;\n";
+		$css .= " border-radius:{$settings['brad']}px;\n";
+		$css .= " background-color:{$settings['color']};\n";
+		$css .= " width:{$settings['size']}px;\n";
 		$css .= "\n}\n";
 
 		return $css;
