@@ -166,28 +166,25 @@ class Cover_Pages_Customizer_Fields {
 	 */
 	public function render_customizer_field( $wp_customize, $f, $id, $args ){
 		//Add control by type
-		switch ( $f['type'] ){
+		if ( in_array( $f['type'], array( 'color', 'slider', 'image', ) ) ) {
 
-			case 'color':
-			case 'slider':
-			case 'image':
-				$this->cool_fields( $wp_customize, $f['type'], $id, $args );
-				return;
-				break;
+			$this->cool_fields( $wp_customize, $f['type'], $id, $args );
+			return;
 
-			case 'font':
-				$args['choices'] = $this->get_fonts();
-				$args['type'] = 'select';
-				break;
+		}
 
-			case 'radio':
-			case 'select':
-				$args['choices'] = empty( $f['choices'] ) ? array( ) :  $f['choices'] ;
-				$args['type'] = $f['type'];
-				break;
+		//Setting type
+		$args['type'] = $f['type'];
 
-			default:
-				$args['type'] = $f['type'];
+		if ( 'font' == $f['type'] ) {
+
+			$args['choices'] = $this->get_fonts();
+			$args['type'] = 'select';
+
+		} elseif ( in_array( $f['type'], array( 'radio', 'select', ) ) ) {
+
+			$args['choices'] = empty( $f['choices'] ) ? array() : $f['choices'];
+
 		}
 
 		$wp_customize->add_control(

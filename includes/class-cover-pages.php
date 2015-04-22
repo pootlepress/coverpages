@@ -96,33 +96,48 @@ class Cover_Pages {
 	 */
 	private function load_dependencies() {
 
-		/**
-		 * The class responsible for orchestrating the actions and filters of the
-		 * core plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cover-pages-loader.php';
-
-		/**
-		 * The class responsible for defining internationalization functionality
-		 * of the plugin.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-cover-pages-i18n.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the admin area.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-cover-pages-admin.php';
-
-		/**
-		 * The class responsible for defining all actions that occur in the public-facing
-		 * side of the site.
-		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-cover-pages-public.php';
+		foreach ( $this->dependencies() as $dep ) {
+			require_once plugin_dir_path( dirname( __FILE__ ) ) . $dep;
+		}
 
 		$this->loader = new Cover_Pages_Loader();
 
 	}
 
+	/**
+	 * Returns array of following files to include
+	 *
+	 * - Cover_Pages_Loader. Orchestrates the hooks of the plugin.
+	 * - Cover_Pages_i18n. Defines internationalization functionality.
+	 * - Cover_Pages_Admin. Defines all hooks for the admin area.
+	 * - Cover_Pages_Public. Defines all hooks for the public side of the site.
+	 *
+	 * @since    1.0.0
+	 * @access   private
+	 */
+	public function dependencies(){
+		return array(
+			/**
+			 * The class responsible for orchestrating the actions and filters of the
+			 * core plugin.
+			 */
+			'includes/class-cover-pages-loader.php',
+			/**
+			 * The class responsible for defining internationalization functionality
+			 * of the plugin.
+			 */
+			'includes/class-cover-pages-i18n.php',
+			/**
+			 * The class responsible for defining all actions that occur in the admin area.
+			 */
+			'admin/class-cover-pages-admin.php',
+			/**
+			 * The class responsible for defining all actions that occur in the public-facing
+			 * side of the site.
+			 */
+			'public/class-cover-pages-public.php',
+		);
+	}
 	/**
 	 * Define the locale for this plugin for internationalization.
 	 *
