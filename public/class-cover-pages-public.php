@@ -79,23 +79,28 @@ class Cover_Pages_Public {
 				'color' => get_option( 'cover-pages-bg-color', '' ),
 				'opacity' => get_option( 'cover-pages-bg-opacity', '0' ),
 			),
-			'title' => array(
-				'font' => get_option( 'cover-pages-title-font', '' ),
-				'size' => get_option( 'cover-pages-title-size', '' ),
-				'color' => get_option( 'cover-pages-title-color', '' ),
-			),
-			'tagline' => array(
-				'font' => get_option( 'cover-pages-tag-font', '' ),
-				'size' => get_option( 'cover-pages-tag-size', '' ),
-				'color' => get_option( 'cover-pages-tag-color', '' ),
-			),
-			'text' => array(
-				'font' => get_option( 'cover-pages-text-font', '' ),
-				'size' => get_option( 'cover-pages-text-size', '' ),
-				'color' => get_option( 'cover-pages-text-color', '' ),
-			),
+			'title' => $this->get_typography_options( 'title' ),
+			'tagline' => $this->get_typography_options( 'tag' ),
+			'text' => $this->get_typography_options( 'text' ),
 			'button1' => $this->get_button_options( 1 ),
 			'button2' =>  $this->get_button_options( 2 ),
+		);
+	}
+
+	/**
+	 * Gets typography settings
+	 * @since    1.0.0
+	 *
+	 * @param string $for Element to get typography options for
+	 *
+	 * @return array settings
+	 *
+	 */
+	public function get_typography_options( $for ){
+		return array(
+			'font' => get_option( "cover-pages-{$for}-font", '' ),
+			'size' => get_option( "cover-pages-{$for}-size", '' ),
+			'color' => get_option( "cover-pages-{$for}-color", '' ),
 		);
 	}
 

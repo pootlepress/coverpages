@@ -201,29 +201,30 @@ class Cover_Pages_Customizer_Fields {
 	 * @return array Fonts
 	 */
 	public function cool_fields( $wp_customize, $type, $id, $args ){
+		$field_class = '';
 		switch ( $type ) {
 
 			case 'color':
-				$field_class = 'WP_Customize_Color_Control';
+				$field_class .= 'WP_Customize_Color_Control';
 				break;
 
 			case 'slider':
-				$field_class = 'Cover_Page_Slider_Customize_Control';
+				$field_class .= 'Cover_Page_Slider_Customize_Control';
 				break;
 
 			case 'image':
-				$field_class = 'WP_Customize_Image_Control';
+				$field_class .= 'WP_Customize_Image_Control';
 				break;
 		}
-
-		$wp_customize->add_control(
-			new $field_class(
-				$wp_customize,
-				$id,
-				$args
-			)
-		);
-
+		if ( '' != $field_class ){
+			$wp_customize->add_control(
+				new $field_class(
+					$wp_customize,
+					$id,
+					$args
+				)
+			);
+		}
 	}
 
 	/**
